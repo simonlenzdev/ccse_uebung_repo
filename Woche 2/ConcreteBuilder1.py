@@ -82,6 +82,7 @@ class Director:
 
     @builder.setter
     def builder(self, builder: Builder) -> None:
+        print("Builder setter called!")
         self._builder = builder
 
     def build_minimal_viable_product(self) -> None:
