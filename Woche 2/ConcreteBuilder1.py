@@ -34,7 +34,7 @@ class Product1:
     def add(self, part: Any) -> None:
         self.parts.append(part)
 
-    def list_parts(Self) -> None:
+    def list_parts(self) -> None:
         print(f"Product parts: {', '.join(self.parts)}", end="")
 
 
@@ -93,9 +93,31 @@ class Director:
         self.builder.produce_part_c()
 
 
-c = ConcreteBuilder1()
-c.produce_part_a()
-c.produce_part_b()
-c.produce_part_c()
-prod = c.return_item()
-print(prod)
+# c = ConcreteBuilder1()
+# c.produce_part_a()
+# c.produce_part_b()
+# c.produce_part_c()
+# prod = c.return_item()
+# print(prod)
+
+director = Director()
+builder = ConcreteBuilder1()
+director.builder = builder
+
+print("Standard basic product: ")
+director.build_minimal_viable_product()
+builder.product.list_parts()
+
+print("\n")
+
+print("Standard full featured product: ")
+director.build_full_featured_product()
+builder.product.list_parts()
+
+print("\n")
+
+print("Custom product: ")
+builder.produce_part_a()
+builder.produce_part_c()
+builder.product.list_parts()
+
