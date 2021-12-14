@@ -56,7 +56,7 @@ class Component(ABC):
         pass
 
 
-class Leaf(Component):
+class Product(Component):
     """
     The Leaf class represents the end objects of a composition. A leaf can't
     have any children.
@@ -65,11 +65,18 @@ class Leaf(Component):
     objects only delegate to their sub-components.
     """
 
-    def operation(self) -> str:
-        return "Leaf"
+    def __init__(self, price) -> None:
+        self.price = price
+        super().__init__()
+
+    def operation(self) -> float:
+        return self.price
+
+    def getPrice(self) -> float:
+        return self.price
 
 
-class Composite(Component):
+class Box(Component):
     """
     The Composite class represents the complex components that may have
     children. Usually, the Composite objects delegate the actual work to their
@@ -106,7 +113,7 @@ class Composite(Component):
         results = []
         for child in self._children:
             results.append(child.operation())
-        return f"Branch({'+'.join(results)})"
+        return sum(results)
 
 
 def client_code(component: Component) -> None:
@@ -132,29 +139,47 @@ def client_code2(component1: Component, component2: Component) -> None:
 
 if __name__ == "__main__":
     # This way the client code can support the simple leaf components...
-    simple = Leaf()
+    phone = Product(23.50)
     print("Client: I've got a simple component:")
-    client_code(simple)
+    client_code(phone)
+    print("\n")
+    print(phone.getPrice())
+    print("\n")
+
+    order = Box()
+
+    box1 = Box()
+    box1.add(Product(10.00))
+    box1.add(Product(99.99))
+
+    box2 = Box()
+    box2.add(Product(17.49))
+
+    order.add(box1)
+    order.add(box2)
+
+    print("Client: Now I've got a composite tree:")
+    client_code(order)
     print("\n")
 
     # ...as well as the complex composites.
-    tree = Composite()
+    # tree = Composite()
 
-    branch1 = Composite()
-    branch1.add(Leaf())
-    branch1.add(Leaf())
+    # branch1 = Composite()
+    # branch1.add(Leaf())
+    # branch1.add(Leaf())
 
-    branch2 = Composite()
-    branch2.add(Leaf())
+    # branch2 = Composite()
+    # branch2.add(Leaf())
 
-    tree.add(branch1)
-    tree.add(branch2)
+    # tree.add(branch1)
+    # tree.add(branch2)
 
-    print("Client: Now I've got a composite tree:")
-    client_code(tree)
-    print("\n")
+    # print("Client: Now I've got a composite tree:")
+    # client_code(tree)
+    # print("\n")
 
-    print(
-        "Client: I don't need to check the components classes even when managing the tree:"
-    )
-    client_code2(tree, simple)
+    # print(
+    #     "Client: I don't need to check the components classes even when managing the tree:"
+    # )
+    # client_code2(tree, simple)
